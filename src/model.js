@@ -4,7 +4,7 @@ export default class Model {
     }
 
     getItem(id) {
-        return this._state.find(item => item.id == id);
+        return this._state.find(item => item.id === parseFloat(id));
     }
 
     addItem(item) {
@@ -22,7 +22,7 @@ export default class Model {
     }
 
     removeItem(id) {
-        const index = this._state.findIndex(item => item.id == id);
+        const index = this._state.findIndex(item => item.id === parseFloat(id));
 
         if (index > -1) {
             this._state.splice(index, 1);

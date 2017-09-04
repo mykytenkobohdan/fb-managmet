@@ -60,9 +60,9 @@ class View extends EventEmitter {
 
     handleEdits({target}) {
         const listItem = target.parentNode;
-        const id = listItem.getAttribute('data-id');
+        const id = listItem.id;
         const label = listItem.querySelector('.title');
-        const input = listItem.querySelector('.text-field');
+        const input = listItem.querySelector('.textfield');
         const editButton = listItem.querySelector('.edit');
         const title = input.value;
         const isEditing = listItem.classList.contains('editing');
@@ -78,13 +78,13 @@ class View extends EventEmitter {
 
     handleRemove({target}) {
         const listItem = target.parentNode;
-        const id = listItem.getAttribute('data-id');
+        const id = listItem.id;
 
         this.emit('remove', id);
     }
 
     findListItem(id) {
-        return this.list.querySelector(`id="${id}"`);
+        return document.getElementById(id);
     }
 
     addItem(todo) {
@@ -111,7 +111,7 @@ class View extends EventEmitter {
     editItem(todo) {
         const listItem = this.findListItem(todo.id);
         const label = listItem.querySelector('.title');
-        const input = listItem.querySelector('.text-field');
+        const input = listItem.querySelector('.textfield');
         const editButton = listItem.querySelector('.edit');
 
         label.textContent = todo.title;
@@ -120,7 +120,7 @@ class View extends EventEmitter {
     }
 
     removeItem(todo) {
-        const listItem = this.findListItem(todo.id);
+        const listItem = this.findListItem(todo);
 
         this.list.removeChild(listItem);
     }
