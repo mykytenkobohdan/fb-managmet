@@ -1,13 +1,16 @@
-import {createElement} from './helpers';
+import {createElement, EventEmitter} from './helpers';
 
-export default class View {
+class View extends EventEmitter {
     constructor() {
+        super();
+
         this.form = document.getElementById('todo-form');
         this.input = document.getElementById('add-input');
         this.list = document.getElementById('todo-list');
+        this.form.addEventListener('submit', this.handleAdd.bind(this));
     }
 
-    static createElement(todo) {
+    createElement(todo) {
         const checkbox = createElement('input', {
             type: 'checkbox',
             className: 'checkbox',
@@ -18,14 +21,14 @@ export default class View {
         const editButton = createElement('button', {className: 'edit'}, 'Edit');
         const removeButton = createElement('button', {className: 'remove'}, 'Remove');
         const item = createElement('li', {
-            className: `todo-tem${todo.completed ? ' completed' : ''}`,
+            className: `todo-item${todo.completed ? ' completed' : ''}`,
             'data-id': todo.id
         }, checkbox, label, editInput, editButton, removeButton);
 
         return this.addEventsListeners(item);
     }
 
-    static addEventsListeners(item) {
+    addEventsListeners(item) {
         const checkbox = item.querySelector('.checkbox');
         const editButton = item.querySelector('.edit');
         const removeButton = item.querySelector('.remove');
@@ -37,16 +40,49 @@ export default class View {
         return item;
     }
 
-    handleToggle(event) {
+    handleAdd(event) {
+        event.preventDefault();
 
+        if (!this.input.value) return alert('You should write task name.');
+
+        const value = this.input.value;
+
+        this.emit('add', value)
     }
 
-    handleEdits(event) {
+    handleToggle({target}) {
+        const listItem = target.parentNode;
+        const id = listItem.getAttribute('data-id');
+        const completed = target.checked;
 
+        console.log("ID: ". id);
+
+        this.emit('toggle', {id, completed});
     }
 
-    handleRemove(event) {
+    handleEdits({target}) {
+        const listItem = target.parentNode;
+        const id = listItem.getAttribute('data-id');
+        const label = listItem.querySelector('.title');
+        const input = listItem.querySelector('.text-field');
+        const editButton = listItem.querySelector('.edit');
+        const title = input.value;
+        const isEditing = listItem.classList.contains('editing');
 
+        if (isEditing) {
+            this.emit('edit', {id, title})
+        } else {
+            input.value = label.textContent;
+            editButton.textContent = 'Save';
+            listItem.classList.add('editing');
+        }
+    }
+
+    handleRemove({target}) {
+        const listItem = target.parentNode;
+        const id = listItem.getAttribute('data-id');
+
+        this.emit('remove', id);
     }
 
     findListItem(id) {
@@ -90,3 +126,5 @@ export default class View {
         this.list.removeChild(listItem);
     }
 }
+
+export default View;
