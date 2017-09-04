@@ -22,7 +22,7 @@ class View extends EventEmitter {
         const removeButton = createElement('button', {className: 'remove'}, 'Remove');
         const item = createElement('li', {
             className: `todo-item${todo.completed ? ' completed' : ''}`,
-            'data-id': todo.id
+            id: todo.id
         }, checkbox, label, editInput, editButton, removeButton);
 
         return this.addEventsListeners(item);
@@ -52,10 +52,8 @@ class View extends EventEmitter {
 
     handleToggle({target}) {
         const listItem = target.parentNode;
-        const id = listItem.getAttribute('data-id');
+        const id = listItem.id;
         const completed = target.checked;
-
-        console.log("ID: ". id);
 
         this.emit('toggle', {id, completed});
     }
@@ -86,7 +84,7 @@ class View extends EventEmitter {
     }
 
     findListItem(id) {
-        return this.list.querySelector(`[data-id="${id}"]`);
+        return this.list.querySelector(`id="${id}"`);
     }
 
     addItem(todo) {
@@ -98,6 +96,7 @@ class View extends EventEmitter {
 
     toggleItem(todo) {
         const listItem = this.findListItem(todo.id);
+
         const checkbox = listItem.querySelector('.checkbox');
 
         checkbox.checked = todo.completed;
