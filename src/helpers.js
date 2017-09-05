@@ -31,4 +31,16 @@ class EventEmitter {
     }
 }
 
-export {createElement, EventEmitter};
+function save(data) {
+    const string = JSON.stringify(data);
+
+    localStorage.setItem('todos', string);
+}
+
+function load() {
+    const string = localStorage.getItem('todos');
+
+    return JSON.parse(string);
+}
+
+export {createElement, EventEmitter, save, load};

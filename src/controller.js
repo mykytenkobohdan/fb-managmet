@@ -7,6 +7,8 @@ export default class Controller {
         view.on('toggle', this.toggleTogo.bind(this));
         view.on('edit', this.editTodo.bind(this));
         view.on('remove', this.removeTodo.bind(this));
+
+        view.show(model._state);
     }
 
     addTodo(title) {
