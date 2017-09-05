@@ -20,10 +20,7 @@ export default class Controller {
     }
 
     toggleTogo({id, completed}) {
-
-        console.log(id, completed);
-
-        const todo = this.model.updateItem(id, completed);
+        const todo = this.model.updateItem(id, {completed});
 
         this.view.toggleItem(todo);
     }

@@ -7,6 +7,7 @@ class View extends EventEmitter {
         this.form = document.getElementById('todo-form');
         this.input = document.getElementById('add-input');
         this.list = document.getElementById('todo-list');
+
         this.form.addEventListener('submit', this.handleAdd.bind(this));
     }
 
@@ -96,12 +97,11 @@ class View extends EventEmitter {
 
     toggleItem(todo) {
         const listItem = this.findListItem(todo.id);
-
         const checkbox = listItem.querySelector('.checkbox');
 
         checkbox.checked = todo.completed;
 
-        if (todo.completed) {
+        if (checkbox.checked) {
             listItem.classList.add('completed');
         } else {
             listItem.classList.remove('completed');
@@ -111,7 +111,6 @@ class View extends EventEmitter {
     editItem(todo) {
         const listItem = this.findListItem(todo.id);
         const label = listItem.querySelector('.title');
-        const input = listItem.querySelector('.textfield');
         const editButton = listItem.querySelector('.edit');
 
         label.textContent = todo.title;

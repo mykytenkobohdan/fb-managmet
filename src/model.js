@@ -1,5 +1,9 @@
-export default class Model {
+import {EventEmitter} from './helpers';
+
+class Model extends EventEmitter{
     constructor(state = []) {
+        super();
+
         this._state = state;
     }
 
@@ -9,7 +13,7 @@ export default class Model {
 
     addItem(item) {
         this._state.push(item);
-
+        this.emit('change', this._state);
         return item;
     }
 
@@ -17,6 +21,8 @@ export default class Model {
         const item = this.getItem(id);
 
         Object.keys(data).forEach(prop => item[prop] = data[prop]);
+
+        this.emit('change', this._state);
 
         return item;
     }
@@ -26,6 +32,9 @@ export default class Model {
 
         if (index > -1) {
             this._state.splice(index, 1);
+            this.emit('change', this._state);
         }
     }
 }
+
+export default  Model;
